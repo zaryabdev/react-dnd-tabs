@@ -1,11 +1,10 @@
 import update from "immutability-helper";
 import { memo, useCallback, useState } from "react";
 import { useDrop } from "react-dnd";
-import { Card } from "./Card.jsx";
 import { ItemTypes } from "./ItemTypes.jsx";
-const style = {
-    width: 400,
-};
+import { Tab } from "./Tab.jsx";
+
+
 const ITEMS = [
     {
         id: 1,
@@ -18,22 +17,6 @@ const ITEMS = [
     {
         id: 3,
         text: "Write README",
-    },
-    {
-        id: 4,
-        text: "Create some examples",
-    },
-    {
-        id: 5,
-        text: "Spam in Twitter and IRC to promote it",
-    },
-    {
-        id: 6,
-        text: "???",
-    },
-    {
-        id: 7,
-        text: "PROFIT",
     },
 ];
 export const Container = memo(function Container() {
@@ -64,9 +47,9 @@ export const Container = memo(function Container() {
     );
     const [, drop] = useDrop(() => ({ accept: ItemTypes.CARD }));
     return (
-        <div ref={drop} style={style}>
+        <div className="d-flex flex-row justify-content-start align-items-start w-100" ref={drop}>
             {cards.map((card) => (
-                <Card
+                <Tab
                     key={card.id}
                     id={`${card.id}`}
                     text={card.text}
@@ -74,6 +57,10 @@ export const Container = memo(function Container() {
                     findCard={findCard}
                 />
             ))}
+            <div className="align-self-stretch mx-1 p-2 mx-1 bg-dark text-light">
+                <span className="ms-3">+</span>
+            </div>
         </div>
+
     );
 });
