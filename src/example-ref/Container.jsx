@@ -3,7 +3,7 @@ import Card from './Card';
 import './styles.css';
 const log = data => console.log(data);
 
-const TOTAL_ITEMS = 10;
+const TOTAL_ITEMS = 4;
 
 
 const init_cards = [...Array(TOTAL_ITEMS).keys()].map(i => {
@@ -28,12 +28,22 @@ const init_state = {
 };
 
 const cardReducer = (state, action) => {
+    debugger;
+    log(state);
+    log(action);
+
     switch (action.type) {
         case 'CLEAR_SELECTION':
             return {
                 ...state,
                 selectedCards: init_state.selectedCards,
                 lastSelectedIndex: init_state.lastSelectedIndex
+            };
+        case 'UPDATE_SELECTION':
+            return {
+                ...state,
+                selectedCards: action.newSelectedCards,
+                lastSelectedIndex: action.newLastSelectedIndex
             };
         default:
             throw new Error();
@@ -49,14 +59,74 @@ export const Container = memo(function Container() {
         dispatch({ type: "CLEAR_SELECTION" });
     };
 
+    const handleItemSelection = (index, cmdKey, shiftKey) => {
+        debugger;
+        let newSelectedCards;
+        const cards = state.cards;
+        const card = index < 0 ? {} : cards[index];
+        const newLastSelectedIndex = index;
+
+        if (!cmdKey && !shiftKey) {
+            // log(card);
+            newSelectedCards = [card, {
+                id: 1,
+                order: 0,
+                url: "https://picsum.photos/40/25?random&0"
+            }];
+            // newSelectedCards = [card];
+        }
+
+        let filteredCards = [];
+
+        // gets selected cards from cards array
+        for (let i = 0; i < cards.length; i++) {
+            newSelectedCards.forEach(el => {
+                if (cards[i].id === el.id) {
+                    filteredCards.push(el);
+                }
+            });
+        }
+
+        log(filteredCards);
+
+        // let filteredCards = cards.filter(filCard => {
+        //     debugger;
+
+        //     let x = newSelectedCards.find(finCard => {
+        //         return finCard === filCard;
+        //     });
+
+        //     // log(x);
+        //     return x ? true : false;
+
+        // });
+
+        log(filteredCards);
+        const finalList = filteredCards ? filteredCards : [];
+
+        dispatch({
+            type: 'UPDATE_SELECTION',
+            newSelectedCards: finalList,
+            newLastSelectedIndex: newLastSelectedIndex
+        });
+
+
+        // log(state);
+
+
+    };
+
     return (
-        <div className="">
+        <div className="container">
             {
                 state.cards.map((card, cardIndex) => {
                     return <Card
                         key={`card-${card.id}`}
                         id={card.id}
                         url={card.url}
+                        index={cardIndex}
+                        onSelectionChange={handleItemSelection}
+                        selectedCards={state.selectedCards}
                     />;
                 })
             }
