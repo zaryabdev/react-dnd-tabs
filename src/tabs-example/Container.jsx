@@ -2,8 +2,8 @@ import update from "immutability-helper";
 import { memo, useCallback, useState } from "react";
 import { useDrop } from "react-dnd";
 import { ItemTypes } from "./ItemTypes.jsx";
+import "./palette.css";
 import { Tab } from "./Tab.jsx";
-
 
 const ITEMS = [
     {
