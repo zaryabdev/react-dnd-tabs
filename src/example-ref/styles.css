@@ -57,9 +57,16 @@ h4 {
     flex-direction: column;
 }
 
-.card-wrapper-selected {
-}
-
 .card-wrapper-selected:not(.card-wrapper-dragging) .card-outer {
     border: 2px solid orange;
+}
+
+.insert-line-left,
+.insert-line-right {
+    position: absolute;
+    top: 0;
+    left: -1px;
+    height: 100%;
+    width: 2px;
+    background-color: orange;
 }

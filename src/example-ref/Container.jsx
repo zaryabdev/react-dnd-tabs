@@ -10,7 +10,9 @@ const init_cards = [...Array(TOTAL_ITEMS).keys()].map(i => {
     let obj = {
         id: i + 1,
         order: i,
-        url: "https://picsum.photos/40/25?random&" + i
+        url: "https://picsum.photos/10/10?random&" + i,
+        color: Math.floor(Math.random() * 16777215).toString(16)
+
     };
 
     return obj;
@@ -68,11 +70,11 @@ export const Container = memo(function Container() {
 
         if (!cmdKey && !shiftKey) {
             // log(card);
-            newSelectedCards = [card, {
-                id: 1,
-                order: 0,
-                url: "https://picsum.photos/40/25?random&0"
-            }];
+            // newSelectedCards = [card, {
+            //     id: 1,
+            //     order: 0,
+            //     url: "https://picsum.photos/40/25?random&0"
+            // }];
             // newSelectedCards = [card];
         }
 
@@ -120,6 +122,11 @@ export const Container = memo(function Container() {
         <div className="container">
             {
                 state.cards.map((card, cardIndex) => {
+
+                    const inserLineOnLeft = state.hoverIndex === cardIndex && state.insertIndex === cardIndex;
+
+                    const inserLineOnRight = state.hoverIndex === cardIndex && state.insertIndex === cardIndex + 1;
+
                     return <Card
                         key={`card-${card.id}`}
                         id={card.id}
@@ -128,6 +135,11 @@ export const Container = memo(function Container() {
                         onSelectionChange={handleItemSelection}
                         selectedCards={state.selectedCards}
                         isSelected={state.selectedCards.includes(card)}
+                        inserLineOnLeft={inserLineOnLeft}
+                        inserLineOnRight={inserLineOnRight}
+                        order={card.order}
+                        clearItemSelection={clearItemSelection}
+                        color={card.color}
                     />;
                 })
             }

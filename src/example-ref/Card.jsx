@@ -9,8 +9,28 @@ export default function Card(props) {
 
     const [{ isDragging }, drag, preview] = useDrag(() => ({
         type: ItemTypes.CARD,
-        item: {
-            // log(monitor);
+        item: () => {
+            {
+                const { id, order, url } = props;
+                const draggedCard = { id, order, url };
+                let cards;
+
+                if (false) {
+                    // add this later
+                    // if (props.selectedCards.find((card) => card.id === props.id)) {
+                    //     cards = props.selectedCards;
+                    //   }
+                } else {
+                    props.clearItemSelection();
+                    cards = [draggedCard];
+                }
+                // log(monitor);
+
+                return {
+                    cards,
+                    draggedCard
+                };
+            }
         },
         end: (item, monitor) => {
             // log(item);
@@ -30,7 +50,7 @@ export default function Card(props) {
         return {
             accept: ItemTypes.CARD,
             hover: (item, monitor) => {
-                log(item);
+                // log(item);
             },
             collect: (monitor) => {
                 return {
@@ -54,11 +74,24 @@ export default function Card(props) {
 
     return (
         <div className={`card-div-${props.id}`} style={{ position: "relative" }}>
+            {
+                hovered ? "HOVERED" : ""
+            }
+            {
+                props.inserLineOnLeft && hovered && (
+                    <div className="inser-line-left"></div>
+                )
+            }
             <div className={"card-wrapper " + styleClasses.join(" ")}>
                 <div ref={(node) => drag(drop(node))} className="card" onClick={onClick} style={{ opacity }}>
-                    <CardContent url={props.url} />
+                    <CardContent url={props.url} color={props.color} />
                 </div>
             </div>
+            {
+                props.inserLineOnRight && hovered && (
+                    <div className="inser-line-right"></div>
+                )
+            }
         </div>
     );
 }

@@ -23,11 +23,11 @@ export const Tab = memo(function Card({ id, text, card, selectedCard, moveCard, 
         }),
         [id, originalIndex, moveCard]
     );
+
     const [, drop] = useDrop(
         () => ({
             accept: ItemTypes.CARD,
             hover({ id: draggedId }) {
-                console.log("HOVERRRRRR");
                 if (draggedId !== id) {
                     const { index: overIndex } = findCard(id);
                     moveCard(draggedId, overIndex);
