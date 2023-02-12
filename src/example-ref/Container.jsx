@@ -28,7 +28,7 @@ const init_state = {
 };
 
 const cardReducer = (state, action) => {
-    debugger;
+    // debugger;
     log(state);
     log(action);
 
@@ -60,7 +60,7 @@ export const Container = memo(function Container() {
     };
 
     const handleItemSelection = (index, cmdKey, shiftKey) => {
-        debugger;
+        // debugger;
         let newSelectedCards;
         const cards = state.cards;
         const card = index < 0 ? {} : cards[index];
@@ -127,6 +127,7 @@ export const Container = memo(function Container() {
                         index={cardIndex}
                         onSelectionChange={handleItemSelection}
                         selectedCards={state.selectedCards}
+                        isSelected={state.selectedCards.includes(card)}
                     />;
                 })
             }
