@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import { useDrag, useDrop } from "react-dnd";
 import CardContent from './CardContent';
 import ItemTypes from './ItemTypes';
-const log = data => console.log(data);
+const log = (data) => { return console.log(data); };
 
 export default function Card(props) {
     const ref = useRef(null);
@@ -15,12 +15,11 @@ export default function Card(props) {
                 const draggedCard = { id, order, url };
                 let cards;
 
-                if (false) {
-                    // add this later
-                    // if (props.selectedCards.find((card) => card.id === props.id)) {
-                    //     cards = props.selectedCards;
-                    //   }
+                if (props.selectedCards.find(card => card.id === props.id)) {
+                    cards = props.selectedCards;
+
                 } else {
+                    log("Clear called from drag item");
                     props.clearItemSelection();
                     cards = [draggedCard];
                 }
@@ -35,6 +34,8 @@ export default function Card(props) {
         end: (item, monitor) => {
             // log(item);
             // log(monitor);
+            props.rearrangeCards(item);
+
         },
         collect: (monitor) => {
             // log(monitor);
@@ -51,6 +52,20 @@ export default function Card(props) {
             accept: ItemTypes.CARD,
             hover: (item, monitor) => {
                 // log(item);
+                const dragIndex = item.draggedCard.index;
+                const hoverIndex = props.index;
+
+                // Determine rectangle on screen
+                const hoverBoundingRect = ref.current.getBoundingClientRect();
+                const midX = hoverBoundingRect.left + (hoverBoundingRect.right - hoverBoundingRect.left) / 2;
+
+                // Determine mouse position
+                const pointerOffset = monitor.getClientOffset();
+
+                const newInsertIndex = pointerOffset.x < midX ? hoverIndex : hoverIndex + 1;
+
+
+                props.setInsertIndex(dragIndex, hoverIndex, newInsertIndex);
             },
             collect: (monitor) => {
                 return {
@@ -71,27 +86,37 @@ export default function Card(props) {
     if (props.isSelected) {
         styleClasses.push("card-wrapper-selected");
     }
-
+    drag(drop(ref));
     return (
         <div className={`card-div-${props.id}`} style={{ position: "relative" }}>
-            {
-                hovered ? "HOVERED" : ""
-            }
+            { /*
+                <span className="text-white">
+                {hovered ? "T" : "F"}
+                </span>
+            */}
             {
                 props.inserLineOnLeft && hovered && (
-                    <div className="inser-line-left"></div>
+                    <div className="insert-line-left"></div>
                 )
             }
             <div className={"card-wrapper " + styleClasses.join(" ")}>
-                <div ref={(node) => drag(drop(node))} className="card" onClick={onClick} style={{ opacity }}>
+                <div ref={ref} className="card" onClick={onClick} style={{ opacity }}>
                     <CardContent url={props.url} color={props.color} />
                 </div>
+                { /*
+                    <span className="text-white">
+                        {
+                            JSON.stringify(props)
+                        }
+                    </span>
+                */}
             </div>
             {
                 props.inserLineOnRight && hovered && (
-                    <div className="inser-line-right"></div>
+                    <div className="insert-line-right"></div>
                 )
             }
+
         </div>
     );
 }

@@ -70,3 +70,11 @@ h4 {
     width: 2px;
     background-color: orange;
 }
+
+.insert-line-right {
+    left: auto;
+    right: -1px;
+}
+.text-white {
+    color: white;
+}

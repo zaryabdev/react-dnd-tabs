@@ -1,16 +1,16 @@
-import React, { memo, useCallback, useReducer, useState } from "react";
+import React, { memo, useCallback, useEffect, useReducer, useState } from "react";
 import Card from './Card';
 import './styles.css';
 const log = data => console.log(data);
 
-const TOTAL_ITEMS = 4;
+const TOTAL_ITEMS = 8;
 
 
 const init_cards = [...Array(TOTAL_ITEMS).keys()].map(i => {
     let obj = {
         id: i + 1,
         order: i,
-        url: "https://picsum.photos/10/10?random&" + i,
+        url: "https://picsum.photos/80/45?random&" + i,
         color: Math.floor(Math.random() * 16777215).toString(16)
 
     };
@@ -31,8 +31,8 @@ const init_state = {
 
 const cardReducer = (state, action) => {
     // debugger;
-    log(state);
-    log(action);
+    // log(state);
+    // log(action);
 
     switch (action.type) {
         case 'CLEAR_SELECTION':
@@ -47,6 +47,18 @@ const cardReducer = (state, action) => {
                 selectedCards: action.newSelectedCards,
                 lastSelectedIndex: action.newLastSelectedIndex
             };
+        case "REARRANGE_CARDS":
+            return { ...state };
+        case "SET_INSERTINDEX":
+            // dragIndex: action.dragIndex,
+            // log("INSIDE DISPATCH");
+            // log(action.hoverIndex);
+            // log(action.insertIndex);
+            return {
+                ...state,
+                hoverIndex: action.hoverIndex,
+                insertIndex: action.insertIndex
+            };
         default:
             throw new Error();
     }
@@ -56,6 +68,10 @@ const cardReducer = (state, action) => {
 export const Container = memo(function Container() {
 
     const [state, dispatch] = useReducer(cardReducer, init_state);
+
+    useEffect(() => {
+        log("Global state : " + state.insertIndex);
+    }, [state]);
 
     const clearItemSelection = () => {
         dispatch({ type: "CLEAR_SELECTION" });
@@ -89,7 +105,7 @@ export const Container = memo(function Container() {
             });
         }
 
-        log(filteredCards);
+        // log(filteredCards);
 
         // let filteredCards = cards.filter(filCard => {
         //     debugger;
@@ -103,9 +119,9 @@ export const Container = memo(function Container() {
 
         // });
 
-        log(filteredCards);
+        // log(filteredCards);
         const finalList = filteredCards ? filteredCards : [];
-
+        log("Update selection called");
         dispatch({
             type: 'UPDATE_SELECTION',
             newSelectedCards: finalList,
@@ -118,15 +134,64 @@ export const Container = memo(function Container() {
 
     };
 
+    const setInsertIndex = (dragIndex, hoverIndex, newInsertIndex) => {
+        // log(state.hoverIndex);
+        // log(state.insertIndex);
+        // log({ dragIndex, hoverIndex, newInsertIndex });
+        // state.dragIndex === dragIndex &&
+        if (
+            state.hoverIndex === hoverIndex &&
+            state.insertIndex === newInsertIndex
+        ) {
+            return;
+        }
+        log("GOING TO DISPATCH");
+        dispatch({
+            type: "SET_INSERTINDEX",
+            dragIndex: dragIndex,
+            hoverIndex: hoverIndex,
+            insertIndex: newInsertIndex
+        });
+    };
+
+    const rearrangeCards = (dragItem) => {
+
+        let cards = state.cards.slice();
+        const draggedCards = dragItem.cards;
+
+        let dividerIndex;
+        debugger;
+
+        log("Inside rearrangeCards" + state.insertIndex);
+
+        if ((state.insertIndex >= 0) & (state.insertIndex < cards.length)) {
+            dividerIndex = state.insertIndex;
+        } else {
+            dividerIndex = cards.length;
+        }
+
+        const upperHalfRemainingCards = cards.slice(0, dividerIndex);
+        const lowerHalfRemainingCards = cards.slice(dividerIndex);
+
+        log(upperHalfRemainingCards);
+        log("----------");
+        log(lowerHalfRemainingCards);
+
+        let newCards = [];
+
+        // dispatch({ type: "REARRANGE_CARDS", newCards: newCards });
+
+    };
+
     return (
         <div className="container">
             {
                 state.cards.map((card, cardIndex) => {
 
                     const inserLineOnLeft = state.hoverIndex === cardIndex && state.insertIndex === cardIndex;
-
-                    const inserLineOnRight = state.hoverIndex === cardIndex && state.insertIndex === cardIndex + 1;
-
+                    // log("inserLineOnLeft : " + inserLineOnLeft);
+                    const inserLineOnRight = state.hoverIndex === cardIndex && (state.insertIndex === cardIndex + 1);
+                    // log("inserLineOnRight : " + inserLineOnRight);
                     return <Card
                         key={`card-${card.id}`}
                         id={card.id}
@@ -140,6 +205,8 @@ export const Container = memo(function Container() {
                         order={card.order}
                         clearItemSelection={clearItemSelection}
                         color={card.color}
+                        setInsertIndex={setInsertIndex}
+                        rearrangeCards={rearrangeCards}
                     />;
                 })
             }
