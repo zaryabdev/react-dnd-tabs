@@ -1,4 +1,4 @@
-import PropTypes from "prop-types";
+// import PropTypes from "prop-types";
 import React from "react";
 import CardContent from "./CardContent";
 
@@ -11,7 +11,7 @@ const CardsDragPreview = ({ cards }) => {
                     className="card card-dragged"
                     style={{
                         zIndex: cards.length - i,
-                        transform: `rotateZ(${-i * 2.5}deg)`
+                        transform: `rotateZ(${-i * 2.5}deg)`,
                     }}
                 >
                     <CardContent url={card.url} />
@@ -21,8 +21,8 @@ const CardsDragPreview = ({ cards }) => {
     );
 };
 
-CardsDragPreview.propTypes = {
-    cards: PropTypes.array
-};
+// CardsDragPreview.propTypes = {
+//     cards: PropTypes.array
+// };
 
 export default CardsDragPreview;

@@ -1,8 +1,8 @@
 import React, { useEffect, useReducer } from "react";
 import Card from "./Card";
 import CardDragLayer from "./CardDragLayer";
-import './styles.css';
-const TOTAL_ITEMS = 10;
+import "./styles.css";
+const TOTAL_ITEMS = 5;
 
 const cardReducer = (state, action) => {
     switch (action.type) {
@@ -10,13 +10,13 @@ const cardReducer = (state, action) => {
             return {
                 ...state,
                 selectedCards: init_state.selectedCards,
-                lastSelectedIndex: init_state.lastSelectedIndex
+                lastSelectedIndex: init_state.lastSelectedIndex,
             };
         case "UPDATE_SELECTION":
             return {
                 ...state,
                 selectedCards: action.newSelectedCards,
-                lastSelectedIndex: action.newLastSelectedIndex
+                lastSelectedIndex: action.newLastSelectedIndex,
             };
         case "REARRANGE_CARDS":
             return { ...state, cards: action.newCards };
@@ -25,18 +25,38 @@ const cardReducer = (state, action) => {
                 ...state,
                 dragIndex: action.dragIndex,
                 hoverIndex: action.hoverIndex,
-                insertIndex: action.insertIndex
+                insertIndex: action.insertIndex,
             };
         default:
             throw new Error();
     }
 };
+// color: Math.floor(Math.random() * 16777215).toString(16),
+
+let colors_palette = [
+    "E8ECF1",
+    "B5CFD8",
+    "7393A7",
+    "F08A5D",
+    "790252",
+    "FF2E63",
+    "00ADB5",
+    "393E46",
+];
 
 const init_cards = [...Array(TOTAL_ITEMS).keys()].map((i) => ({
     id: i + 1,
     order: i,
-    url: "https://picsum.photos/80/45?random&" + i
+    color: colors_palette[generateRandom(0, 8)],
 }));
+
+function generateRandom(min = 0, max = 100) {
+    let difference = max - min;
+    let rand = Math.random();
+    rand = Math.floor(rand * difference);
+    rand = rand + min;
+    return rand;
+}
 
 const init_state = {
     cards: init_cards,
@@ -45,7 +65,7 @@ const init_state = {
     dragIndex: -1,
     hoverIndex: -1,
     insertIndex: -1,
-    isDragging: false
+    isDragging: false,
 };
 
 export function Container() {
@@ -54,7 +74,6 @@ export function Container() {
     useEffect(() => {
         console.log(state);
     }, [state]);
-
 
     const clearItemSelection = () => {
         dispatch({ type: "CLEAR_SELECTION" });
@@ -86,7 +105,7 @@ export function Container() {
             if (foundIndex >= 0) {
                 newSelectedCards = [
                     ...state.selectedCards.slice(0, foundIndex),
-                    ...state.selectedCards.slice(foundIndex + 1)
+                    ...state.selectedCards.slice(foundIndex + 1),
                 ];
             } else {
                 newSelectedCards = [...state.selectedCards, card];
@@ -98,7 +117,7 @@ export function Container() {
         dispatch({
             type: "UPDATE_SELECTION",
             newSelectedCards: finalList,
-            newLastSelectedIndex: newLastSelectedIndex
+            newLastSelectedIndex: newLastSelectedIndex,
         });
     };
 
@@ -122,7 +141,7 @@ export function Container() {
         const newCards = [
             ...upperHalfRemainingCards,
             ...draggedCards,
-            ...lowerHalfRemainingCards
+            ...lowerHalfRemainingCards,
         ];
         dispatch({ type: "REARRANGE_CARDS", newCards: newCards });
     };
@@ -139,7 +158,7 @@ export function Container() {
             type: "SET_INSERTINDEX",
             dragIndex: dragIndex,
             hoverIndex: hoverIndex,
-            insertIndex: newInsertIndex
+            insertIndex: newInsertIndex,
         });
     };
 
@@ -158,7 +177,7 @@ export function Container() {
                             id={card.id}
                             index={i}
                             order={card.order}
-                            url={card.url}
+                            color={card.color}
                             selectedCards={state.selectedCards}
                             rearrangeCards={rearrangeCards}
                             setInsertIndex={setInsertIndex}

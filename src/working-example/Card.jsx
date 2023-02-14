@@ -1,4 +1,4 @@
-import PropTypes from "prop-types";
+// import PropTypes from "prop-types";
 import React, { useEffect, useRef } from "react";
 import { useDrag, useDrop } from "react-dnd";
 import { getEmptyImage } from "react-dnd-html5-backend";
@@ -11,7 +11,7 @@ export default function Card(props) {
     const [{ isDragging }, drag, preview] = useDrag({
         type: ItemTypes.CARD,
         item: (monitor) => {
-            const { id, order, url } = props;
+            const { id, order, url, color } = props;
             const draggedCard = { id, order, url };
             let cards;
             if (props.selectedCards.find((card) => card.id === props.id)) {
@@ -37,8 +37,8 @@ export default function Card(props) {
             props.clearItemSelection();
         },
         collect: (monitor) => ({
-            isDragging: monitor.isDragging()
-        })
+            isDragging: monitor.isDragging(),
+        }),
     });
 
     const [{ hovered }, drop] = useDrop({
@@ -64,14 +64,14 @@ export default function Card(props) {
             props.setInsertIndex(dragIndex, hoverIndex, newInsertIndex);
         },
         collect: (monitor) => ({
-            hovered: monitor.isOver()
-        })
+            hovered: monitor.isOver(),
+        }),
     });
 
     drag(drop(ref));
 
     const onClick = (e) => {
-        props.onSelectionChange(props.index, e.metaKey, e.shiftKey);
+        props.onSelectionChange(props.index, e.ctrlKey, e.shiftKey);
     };
 
     useEffect(() => {
@@ -83,7 +83,7 @@ export default function Card(props) {
         preview(getEmptyImage(), {
             // IE fallback: specify that we'd rather screenshot the node
             // when it already knows it's being dragged so we can hide it with CSS.
-            captureDraggingState: true
+            captureDraggingState: true,
         });
         // If you want to implement componentWillUnmount,
         // return a function from here, and React will call
@@ -91,7 +91,7 @@ export default function Card(props) {
         // return () => console.log('unmounting...');
     }, []);
 
-    const { url } = props;
+    const { color } = props;
     const opacity = isDragging ? 0.4 : 1;
 
     const styleClasses = [];
@@ -109,8 +109,13 @@ export default function Card(props) {
                 <div className="insert-line-left" />
             )}
             <div className={"card-wrapper " + styleClasses.join(" ")}>
-                <div ref={ref} className="card" onClick={onClick} style={{ opacity }}>
-                    <CardContent url={url} />
+                <div
+                    ref={ref}
+                    className="card"
+                    onClick={onClick}
+                    style={{ opacity }}
+                >
+                    <CardContent color={color} />
                 </div>
             </div>
             {props.insertLineOnRight && hovered && (
@@ -120,16 +125,16 @@ export default function Card(props) {
     );
 }
 
-Card.propTypes = {
-    selectedCards: PropTypes.array.isRequired,
-    clearItemSelection: PropTypes.func.isRequired,
-    rearrangeCards: PropTypes.func.isRequired,
-    setInsertIndex: PropTypes.func.isRequired,
-    onSelectionChange: PropTypes.func.isRequired,
-    id: PropTypes.number.isRequired,
-    index: PropTypes.number.isRequired,
-    url: PropTypes.string.isRequired,
-    insertLineOnLeft: PropTypes.bool.isRequired,
-    insertLineOnRight: PropTypes.bool.isRequired,
-    isSelected: PropTypes.bool.isRequired
-};
+// Card.propTypes = {
+//     selectedCards: PropTypes.array.isRequired,
+//     clearItemSelection: PropTypes.func.isRequired,
+//     rearrangeCards: PropTypes.func.isRequired,
+//     setInsertIndex: PropTypes.func.isRequired,
+//     onSelectionChange: PropTypes.func.isRequired,
+//     id: PropTypes.number.isRequired,
+//     index: PropTypes.number.isRequired,
+//     url: PropTypes.string.isRequired,
+//     insertLineOnLeft: PropTypes.bool.isRequired,
+//     insertLineOnRight: PropTypes.bool.isRequired,
+//     isSelected: PropTypes.bool.isRequired
+// };

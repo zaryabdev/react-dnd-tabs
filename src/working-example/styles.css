@@ -34,7 +34,11 @@
 }
 
 .card-wrapper-selected:not(.card-wrapper-dragging) .card-outer {
-    border: 2px solid orange;
+    border: 3px solid orange;
+    /* rounded corners */
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
 }
 
 .card-inner {
@@ -61,7 +65,7 @@
 
 .card-wrapper-dragging.card-wrapper-hovered .card-inner {
     border: 2px solid orange;
-    border-radius: 2px;
+    border-radius: 4px;
     background-color: transparent;
 }
 
