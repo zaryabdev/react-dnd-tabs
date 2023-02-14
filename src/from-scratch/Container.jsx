@@ -3,7 +3,7 @@ import Card from "./Card";
 import "./styles.css";
 
 const TOTAL_ITEMS = 5;
-
+const log = (data) => console.log(data);
 let COLORS = [
     "E8ECF1",
     "B5CFD8",
@@ -22,6 +22,12 @@ const cardReducer = (state, action) => {
                 ...state,
                 selectedCards: init_state.selectedCards,
                 lastSelectedIndex: init_state.lastSelectedIndex,
+            };
+        case "UPDATE_SELECTION":
+            return {
+                ...state,
+                selectedCards: action.newSelectedCards,
+                lastSelectedIndex: action.newLastSelectedIndex,
             };
         default:
             throw new Error();
@@ -62,7 +68,34 @@ export function Container() {
     const clearItemSelection = () => {
         dispatch({ type: "CLEAR_SELECTION" });
     };
-    const handleItemSelection = (index, cmdKey, shiftKey) => {};
+    const handleItemSelection = (index, cmdKey, shiftKey) => {
+        let newSelectedCards;
+        const cards = state.cards;
+        const card = index < 0 ? {} : cards[index];
+        const newLastSelectedIndex = index;
+
+        if (!cmdKey && !shiftKey) {
+            newSelectedCards = [card];
+        }
+
+        // gets selected cards from cards array
+
+        const finalList = [];
+
+        for (let i = 0; i < cards.length; i++) {
+            newSelectedCards.forEach((el) => {
+                if (cards[i].id === el.id) {
+                    finalList.push(el);
+                }
+            });
+        }
+
+        dispatch({
+            type: "UPDATE_SELECTION",
+            newSelectedCards: finalList,
+            newLastSelectedIndex: newLastSelectedIndex,
+        });
+    };
 
     return (
         <main>
@@ -72,7 +105,12 @@ export function Container() {
                         <Card
                             key={currentCard.id}
                             color={currentCard.color}
+                            index={currentCardIndex}
                             onSelectionChange={handleItemSelection}
+                            selectedCards={state.selectedCards}
+                            isSelected={state.selectedCards.includes(
+                                currentCard
+                            )}
                         />
                     );
                 })}

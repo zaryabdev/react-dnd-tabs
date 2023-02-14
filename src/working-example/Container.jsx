@@ -3,7 +3,7 @@ import Card from "./Card";
 import CardDragLayer from "./CardDragLayer";
 import "./styles.css";
 const TOTAL_ITEMS = 5;
-
+const log = (data) => console.log(data);
 let COLORS = [
     "E8ECF1",
     "B5CFD8",
@@ -111,9 +111,11 @@ export function Container() {
                 newSelectedCards = [...state.selectedCards, card];
             }
         }
+
         const finalList = cards
             ? cards.filter((f) => newSelectedCards.find((a) => a === f))
             : [];
+
         dispatch({
             type: "UPDATE_SELECTION",
             newSelectedCards: finalList,

@@ -6,7 +6,6 @@ import CardContent from "./CardContent";
 export default function Card(props) {
     const ref = useRef(null);
     const { color } = props;
-
     // useEffect(() => {
     //     console.log(props);
     // }, [props]);
@@ -15,9 +14,15 @@ export default function Card(props) {
         props.onSelectionChange(props.index, e.crtlKey, e.shiftKey);
     };
 
+    const styleClasses = [];
+
+    if (props.isSelected) {
+        styleClasses.push("card-wrapper-selected");
+    }
+
     return (
         <div key={`card-div-${props.id}`} style={{ position: "relative" }}>
-            <div className="card-wrapper">
+            <div className={"card-wrapper " + styleClasses.join(" ")}>
                 <div ref={ref} className="card" onClick={onClick}>
                     <CardContent color={color} />
                 </div>
