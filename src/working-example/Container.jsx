@@ -4,6 +4,17 @@ import CardDragLayer from "./CardDragLayer";
 import "./styles.css";
 const TOTAL_ITEMS = 5;
 
+let COLORS = [
+    "E8ECF1",
+    "B5CFD8",
+    "7393A7",
+    "F08A5D",
+    "790252",
+    "FF2E63",
+    "00ADB5",
+    "393E46",
+];
+
 const cardReducer = (state, action) => {
     switch (action.type) {
         case "CLEAR_SELECTION":
@@ -33,21 +44,10 @@ const cardReducer = (state, action) => {
 };
 // color: Math.floor(Math.random() * 16777215).toString(16),
 
-let colors_palette = [
-    "E8ECF1",
-    "B5CFD8",
-    "7393A7",
-    "F08A5D",
-    "790252",
-    "FF2E63",
-    "00ADB5",
-    "393E46",
-];
-
 const init_cards = [...Array(TOTAL_ITEMS).keys()].map((i) => ({
     id: i + 1,
     order: i,
-    color: colors_palette[generateRandom(0, 8)],
+    color: COLORS[generateRandom(0, COLORS.length)],
 }));
 
 function generateRandom(min = 0, max = 100) {
@@ -72,7 +72,7 @@ export function Container() {
     const [state, dispatch] = useReducer(cardReducer, init_state);
 
     useEffect(() => {
-        console.log(state);
+        // console.log(state);
     }, [state]);
 
     const clearItemSelection = () => {
