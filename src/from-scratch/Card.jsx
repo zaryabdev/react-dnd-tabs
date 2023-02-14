@@ -20,19 +20,27 @@ export default function Card(props) {
             if (props.selectedCards.find((card) => card.id === props.id)) {
                 cards = props.selectedCards;
             } else {
-                // TODO:
+                // TODO: clear selection
                 // props.clearItemSelection();
                 cards = [draggedCard];
             }
-
             return {
                 cards,
             };
-            // return props;
-            // return {};
+        },
+        end: () => {
+            props.clearItemSelection();
         },
         collect: (monitor) => ({
             isDragging: monitor.isDragging(),
+        }),
+    });
+
+    const [{ hovered }, drop] = useDrop({
+        accept: ItemTypes.CARD,
+        hover: (item, monitor) => {},
+        collect: (monitor) => ({
+            hovered: monitor.isOver(),
         }),
     });
 
@@ -46,13 +54,14 @@ export default function Card(props) {
         styleClasses.push("card-wrapper-selected");
     }
 
-    drag(ref);
+    drag(drop(ref));
 
     return (
         <div key={`card-div-${props.id}`} style={{ position: "relative" }}>
             <div className={"card-wrapper " + styleClasses.join(" ")}>
                 <div ref={ref} className="card" onClick={onClick}>
-                    {isDragging ? "Y" : "N"}
+                    {isDragging ? "💔" : "❤"}
+                    {hovered ? "💫" : "🕳"}
                     <CardContent color={color} />
                 </div>
             </div>
