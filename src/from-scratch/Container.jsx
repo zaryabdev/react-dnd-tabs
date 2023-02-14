@@ -62,14 +62,18 @@ export function Container() {
     const clearItemSelection = () => {
         dispatch({ type: "CLEAR_SELECTION" });
     };
-    const handleItemSelection = () => {};
+    const handleItemSelection = (index, cmdKey, shiftKey) => {};
 
     return (
         <main>
             <div className="container">
                 {state.cards.map((currentCard, currentCardIndex) => {
                     return (
-                        <Card key={currentCard.id} color={currentCard.color} />
+                        <Card
+                            key={currentCard.id}
+                            color={currentCard.color}
+                            onSelectionChange={handleItemSelection}
+                        />
                     );
                 })}
             </div>
