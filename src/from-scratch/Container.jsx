@@ -105,12 +105,14 @@ export function Container() {
                         <Card
                             key={currentCard.id}
                             color={currentCard.color}
+                            order={currentCard.order}
                             index={currentCardIndex}
                             onSelectionChange={handleItemSelection}
                             selectedCards={state.selectedCards}
                             isSelected={state.selectedCards.includes(
                                 currentCard
                             )}
+                            clearItemSelection={clearItemSelection}
                         />
                     );
                 })}

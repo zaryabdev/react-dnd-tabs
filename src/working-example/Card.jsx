@@ -11,8 +11,8 @@ export default function Card(props) {
     const [{ isDragging }, drag, preview] = useDrag({
         type: ItemTypes.CARD,
         item: (monitor) => {
-            const { id, order, url, color } = props;
-            const draggedCard = { id, order, url };
+            const { id, order, color } = props;
+            const draggedCard = { id, order, color };
             let cards;
             if (props.selectedCards.find((card) => card.id === props.id)) {
                 cards = props.selectedCards;

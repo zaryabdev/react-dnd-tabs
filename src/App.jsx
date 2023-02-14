@@ -8,10 +8,11 @@ import Example2 from "./working-example/example";
 function App() {
     return (
         <div className="App">
-            <DndProvider backend={HTML5Backend}>
+            {/* <DndProvider backend={HTML5Backend}>
                 <Example2 />
             </DndProvider>
             <hr />
+             */}
             <DndProvider backend={HTML5Backend}>
                 <Example />
             </DndProvider>

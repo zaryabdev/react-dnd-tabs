@@ -36,9 +36,8 @@
     flex-direction: column;
 }
 
-.card-wrapper-selected .card-outer {
-    border: 3px solid gold;
-    /* rounded corners */
+.card-wrapper-selected:not(.card-wrapper-dragging) .card-outer {
+    border: 3px solid orange;
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     border-radius: 4px;

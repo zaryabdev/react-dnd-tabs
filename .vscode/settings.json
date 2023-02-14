@@ -1,0 +1,23 @@
+{
+    "editor.formatOnSave": true,
+    "editor.fontFamily": "'JetBrains Mono','Source Code Pro Medium', Consolas, 'Courier New', monospace",
+    "files.exclude": {
+        "**/.git": true,
+        "**/.DS_Store": true,
+
+        // "**/node_modules": true,
+        // this excludes all folders
+        // named "node_modules" from
+        // the explore tree
+
+        // alternative version
+        "node_modules": true // this excludes the folder
+        // only from the root of
+        // your workspace
+    },
+    "workbench.colorCustomizations": {
+        "activityBar.background": "#3E2055",
+        "titleBar.activeBackground": "#562D77",
+        "titleBar.activeForeground": "#FDFBFE"
+    }
+}
