@@ -3,6 +3,7 @@ import { useDrag, useDrop } from "react-dnd";
 import { getEmptyImage } from "react-dnd-html5-backend";
 import CardContent from "./CardContent";
 import ItemTypes from "./ItemTypes";
+const log = (data) => console.log(data);
 export default function Card(props) {
     const ref = useRef(null);
     const { color } = props;
@@ -26,6 +27,7 @@ export default function Card(props) {
             }
             return {
                 cards,
+                draggedCard,
             };
         },
         end: () => {
@@ -38,7 +40,38 @@ export default function Card(props) {
 
     const [{ hovered }, drop] = useDrop({
         accept: ItemTypes.CARD,
-        hover: (item, monitor) => {},
+        hover: (item, monitor) => {
+            const dragIndex = item.draggedCard.id;
+            // TODO: find where draggedCard.index is used
+            // const dragIndex = item.draggedCard.index;
+            const hoverIndex = props.index;
+
+            const hoverBoundingRect = ref.current?.getBoundingClientRect();
+
+            // Get horizontal middle
+            const midX = Math.trunc(
+                hoverBoundingRect.left +
+                    (hoverBoundingRect.right - hoverBoundingRect.left) / 2
+            );
+            // Determine mouse position
+            const pointerOffset = monitor.getClientOffset();
+            const pointerOffsetX = pointerOffset.x;
+            let newInsertIndex;
+
+            if (pointerOffsetX < midX) {
+                newInsertIndex = hoverIndex;
+            }
+
+            if (pointerOffsetX > midX) {
+                newInsertIndex = hoverIndex + 1;
+            }
+
+            // log(midX);
+            // log(pointerOffset.x);
+            // log(newInsertIndex);
+
+            props.setInsertIndex(dragIndex, hoverIndex, newInsertIndex);
+        },
         collect: (monitor) => ({
             hovered: monitor.isOver(),
         }),
@@ -56,13 +89,19 @@ export default function Card(props) {
 
     drag(drop(ref));
 
+    const opacity = isDragging ? 0.5 : 1;
+
     return (
         <div key={`card-div-${props.id}`} style={{ position: "relative" }}>
             <div className={"card-wrapper " + styleClasses.join(" ")}>
-                <div ref={ref} className="card" onClick={onClick}>
-                    {isDragging ? "💔" : "❤"}
-                    {hovered ? "💫" : "🕳"}
+                <div
+                    ref={ref}
+                    className="card"
+                    onClick={onClick}
+                    style={{ opacity }}
+                >
                     <CardContent color={color} />
+                    <small className="sm"></small>
                 </div>
             </div>
         </div>

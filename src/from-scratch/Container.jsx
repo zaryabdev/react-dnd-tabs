@@ -29,6 +29,13 @@ const cardReducer = (state, action) => {
                 selectedCards: action.newSelectedCards,
                 lastSelectedIndex: action.newLastSelectedIndex,
             };
+        case "SET_INSERTINDEX":
+            return {
+                ...state,
+                dragIndex: action.dragIndex,
+                insertIndex: action.newInsertIndex,
+                hoverIndex: action.hoverIndex,
+            };
         default:
             throw new Error();
     }
@@ -97,6 +104,25 @@ export function Container() {
         });
     };
 
+    const setInsertIndex = (dragIndex, hoverIndex, newInsertIndex) => {
+        log({ dragIndex, hoverIndex, newInsertIndex });
+
+        // TODO: find about that drag index
+        if (
+            state.hoverIndex === hoverIndex &&
+            state.insertIndex === newInsertIndex
+        ) {
+            return;
+        }
+
+        dispatch({
+            type: "SET_INSERTINDEX",
+            dragIndex,
+            hoverIndex,
+            insertIndex: newInsertIndex,
+        });
+    };
+
     return (
         <main>
             <div className="container">
@@ -104,6 +130,7 @@ export function Container() {
                     return (
                         <Card
                             key={currentCard.id}
+                            id={currentCard.id}
                             color={currentCard.color}
                             order={currentCard.order}
                             index={currentCardIndex}
@@ -113,6 +140,7 @@ export function Container() {
                                 currentCard
                             )}
                             clearItemSelection={clearItemSelection}
+                            setInsertIndex={setInsertIndex}
                         />
                     );
                 })}

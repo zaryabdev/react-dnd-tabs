@@ -4,7 +4,7 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 // import Example from "./example-ref/example";
 // import Example3 from "./tabs-example/example";
 import Example from "./from-scratch/example";
-import Example2 from "./working-example/example";
+// import Example from "./working-example/example";
 function App() {
     return (
         <div className="App">

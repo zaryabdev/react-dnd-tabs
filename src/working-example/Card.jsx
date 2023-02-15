@@ -4,7 +4,7 @@ import { useDrag, useDrop } from "react-dnd";
 import { getEmptyImage } from "react-dnd-html5-backend";
 import CardContent from "./CardContent";
 import ItemTypes from "./ItemTypes";
-
+const log = (data) => console.log(data);
 export default function Card(props) {
     const ref = useRef(null);
 
@@ -50,6 +50,10 @@ export default function Card(props) {
             const dragIndex = item.draggedCard.index;
             const hoverIndex = props.index;
 
+            // log(item);
+            // log({ dragIndex });
+            // log({ hoverIndex });
+
             // Determine rectangle on screen
             const hoverBoundingRect = ref.current?.getBoundingClientRect();
 
@@ -61,6 +65,9 @@ export default function Card(props) {
             const pointerOffset = monitor.getClientOffset();
             const newInsertIndex =
                 pointerOffset.x < midX ? hoverIndex : hoverIndex + 1;
+            log(midX);
+            log(pointerOffset.x);
+            log({ newInsertIndex });
             props.setInsertIndex(dragIndex, hoverIndex, newInsertIndex);
         },
         collect: (monitor) => ({
