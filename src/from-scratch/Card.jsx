@@ -93,6 +93,9 @@ export default function Card(props) {
 
     return (
         <div key={`card-div-${props.id}`} style={{ position: "relative" }}>
+            {props.insertLineOnLeft && hovered && (
+                <div className="insert-line-left"></div>
+            )}
             <div className={"card-wrapper " + styleClasses.join(" ")}>
                 <div
                     ref={ref}
@@ -104,6 +107,9 @@ export default function Card(props) {
                     <small className="sm"></small>
                 </div>
             </div>
+            {props.insertLineOnRight && hovered && (
+                <div className="insert-line-right"></div>
+            )}
         </div>
     );
 }

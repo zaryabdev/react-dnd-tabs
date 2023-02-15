@@ -119,14 +119,25 @@ export function Container() {
             type: "SET_INSERTINDEX",
             dragIndex,
             hoverIndex,
-            insertIndex: newInsertIndex,
+            newInsertIndex,
         });
     };
 
     return (
         <main>
+            <small className="sm">
+                <code>{JSON.stringify(state)}</code>
+            </small>
             <div className="container">
                 {state.cards.map((currentCard, currentCardIndex) => {
+                    const insertLineOnLeft =
+                        state.hoverIndex === currentCardIndex &&
+                        state.insertIndex === currentCardIndex;
+
+                    const insertLineOnRight =
+                        state.hoverIndex === currentCardIndex &&
+                        state.insertIndex === currentCardIndex + 1;
+
                     return (
                         <Card
                             key={currentCard.id}
@@ -141,6 +152,8 @@ export function Container() {
                             )}
                             clearItemSelection={clearItemSelection}
                             setInsertIndex={setInsertIndex}
+                            insertLineOnLeft={insertLineOnLeft}
+                            insertLineOnRight={insertLineOnRight}
                         />
                     );
                 })}

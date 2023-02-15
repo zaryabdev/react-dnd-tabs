@@ -43,6 +43,20 @@
     border-radius: 4px;
 }
 
+.insert-line-left,
+.insert-line-right {
+    position: absolute;
+    top: 0;
+    left: -1px;
+    height: 100%;
+    width: 2px;
+    background-color: orange;
+}
+.insert-line-right {
+    left: auto;
+    right: -1px;
+}
+
 .sm {
-    font-size: smaller;
+    font-size: xx-small;
 }

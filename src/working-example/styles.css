@@ -72,7 +72,7 @@
     opacity: 0;
 }
 
-.insert-line-left,
+/* .insert-line-left,
 .insert-line-right {
     position: absolute;
     top: 0;
@@ -80,7 +80,7 @@
     height: 100%;
     width: 2px;
     background-color: orange;
-}
+} */
 
 .insert-line-right {
     left: auto;
