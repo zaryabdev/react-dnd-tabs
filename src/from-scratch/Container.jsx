@@ -105,7 +105,7 @@ export function Container() {
     };
 
     const setInsertIndex = (dragIndex, hoverIndex, newInsertIndex) => {
-        log({ dragIndex, hoverIndex, newInsertIndex });
+        // log({ dragIndex, hoverIndex, newInsertIndex });
 
         // TODO: find about that drag index
         if (
@@ -121,6 +121,14 @@ export function Container() {
             hoverIndex,
             newInsertIndex,
         });
+    };
+
+    const rearrangeCards = (dragItem) => {
+        let cards = state.cards.slice();
+        const draggedCards = dragItem.cards;
+
+        let dividerIndex;
+        // TODO: rearrange cards on drop
     };
 
     return (
@@ -154,6 +162,7 @@ export function Container() {
                             setInsertIndex={setInsertIndex}
                             insertLineOnLeft={insertLineOnLeft}
                             insertLineOnRight={insertLineOnRight}
+                            rearrangeCards={rearrangeCards}
                         />
                     );
                 })}

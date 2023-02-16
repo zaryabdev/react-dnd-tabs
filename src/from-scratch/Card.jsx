@@ -30,7 +30,8 @@ export default function Card(props) {
                 draggedCard,
             };
         },
-        end: () => {
+        end: (item, monitor) => {
+            props.rearrangeCards(item);
             props.clearItemSelection();
         },
         collect: (monitor) => ({
