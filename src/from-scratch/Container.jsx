@@ -124,11 +124,14 @@ export function Container() {
     };
 
     const rearrangeCards = (dragItem) => {
+        debugger;
         let cards = state.cards.slice();
         const draggedCards = dragItem.cards;
 
         let dividerIndex;
         // TODO: rearrange cards on drop
+
+        console.log(state);
     };
 
     return (
